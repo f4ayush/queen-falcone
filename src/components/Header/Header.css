@@ -1,0 +1,13 @@
+nav{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+nav h1{
+    font-size: 2em;
+    text-align: center;
+}
+
+nav button{
+    align-self: center;
+}
