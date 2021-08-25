@@ -10,11 +10,11 @@ export default function Form() {
     const [options, setOptions] = useState([])
     const [isSelected, setIsSelected] = useState({ 1: false, 2: false, 3: false, 4: false })
     const [vehicles, setVehicles] = useState([])
+    const [time, setTime] = useState(0)
     useEffect(() => {
         getPlanetList()
         getVehicleList()
     }, [])
-
     const getPlanetList = async () => {
         try {
             let { data } = await getPlanets()
@@ -35,8 +35,7 @@ export default function Form() {
         try {
             let { data } = await getVehicles()
             setVehicles(data)
-            console.log(vehicles)
-
+            console.log(data)
         } catch (error) {
 
         }
@@ -57,25 +56,25 @@ export default function Form() {
                 <div>
                     <p>Destination 1</p>
                     <Select options={options} onChange={(e) => getOptionValue(e, 1)} />
-                    {isSelected[1] && <Vehicles />}
+                    {isSelected[1] && <Vehicles setTime={setTime} planet={planets[0]} vehicles={vehicles} setVehicles={setVehicles} />}
                 </div>
                 <div>
                     <p>Destination 2</p>
                     <Select options={options} onChange={(e) => getOptionValue(e, 2)} />
-                    {isSelected[2] && <Vehicles />}
+                    {isSelected[2] && <Vehicles setTime={setTime} planet={planets[1]} vehicles={vehicles} setVehicles={setVehicles} />}
                 </div>
                 <div>
                     <p>Destination 3</p>
                     <Select options={options} onChange={(e) => getOptionValue(e, 3)} />
-                    {isSelected[3] && <Vehicles />}
+                    {isSelected[3] && <Vehicles setTime={setTime} planet={planets[2]} vehicles={vehicles} setVehicles={setVehicles} />}
                 </div>
                 <div>
                     <p>Destination 4</p>
                     <Select options={options} onChange={(e) => getOptionValue(e, 4)} />
-                    {isSelected[4] && <Vehicles />}
+                    {isSelected[4] && <Vehicles setTime={setTime} planet={planets[3]} vehicles={vehicles} setVehicles={setVehicles} />}
                 </div>
             </div>
-
+            <div>Time {time}</div>
             <button>Find Falcone!</button>
         </div>
     )
