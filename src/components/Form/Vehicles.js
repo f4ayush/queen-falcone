@@ -1,20 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
-export default function Vehicles({ vehicles, setVehicles, planet, setTime }) {
+export default function Vehicles({ name, setName, vehicles, setSelectedVehicle, planet }) {
 
-    const [name, setname] = useState("")
-    const updateVehicles = (e) => {
-        setname(e.target.value)
-        let updatedVehicle = vehicles.filter(vehicle => vehicle.name === e.target.value)
-        updatedVehicle[0].total_no -= 1
-        console.log(updatedVehicle)
-        setTime(time => {
-            let newTime = planet.distance / updatedVehicle[0].speed
-            newTime += time
-            return newTime
-        })
-        // setVehicles([...vehicles, updatedVehicle])
+
+    const selectVehicle = (e, vehicle) => {
+        setName(e.target.value)
+        setSelectedVehicle(vehicle)
     }
+
 
     // console.log(planet)
     return (
@@ -29,7 +22,7 @@ export default function Vehicles({ vehicles, setVehicles, planet, setTime }) {
                                     type="radio"
                                     value={vehicle.name}
                                     checked={name === vehicle.name}
-                                    onChange={updateVehicles} />
+                                    onChange={(e) => selectVehicle(e, vehicle)} />
                                 <span>{vehicle.name}({vehicle.total_no})</span>
                             </label>
                         )
@@ -42,7 +35,7 @@ export default function Vehicles({ vehicles, setVehicles, planet, setTime }) {
                                 value={vehicle.name}
                                 disabled
                                 checked={name === vehicle.name}
-                                onChange={(e) => setname(e.target.value)} />
+                                onChange={(e) => setName(e.target.value)} />
                             <span style={{ color: "gray" }}>{vehicle.name}({vehicle.total_no})</span>
                         </label>
                     )

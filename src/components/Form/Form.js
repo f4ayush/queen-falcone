@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import './Form.css'
-import { getPlanets, getVehicles } from '../../api'
+import { getPlanets, getVehicles, getToken, find } from '../../api'
 import { v4 as uuidv4 } from 'uuid';
 import Vehicles from './Vehicles';
 
 export default function Form() {
-    const [planets, setPlanets] = useState([])
+    const [planet, setPlanet] = useState("Select")
+    const [selectedPlanetDetails, setSelectedPlanetDetails] = useState([])
+    const [selectedVehicleDetails, setSelectedVehicleDetails] = useState([])
+    const [selectedVehicle, setSelectedVehicle] = useState({})
+    const [count, setCount] = useState(1)
     const [options, setOptions] = useState([])
-    const [isSelected, setIsSelected] = useState({ 1: false, 2: false, 3: false, 4: false })
     const [vehicles, setVehicles] = useState([])
     const [time, setTime] = useState(0)
+    const [name, setName] = useState("")
     useEffect(() => {
         getPlanetList()
         getVehicleList()
@@ -40,42 +44,69 @@ export default function Form() {
 
         }
     }
-
-    const getOptionValue = (e, index) => {
-        let newOptions = options.filter(option => option.key !== e.key)
+    const updateStates = () => {
+        let selectedVehicleSpeed
+        setSelectedPlanetDetails([...selectedPlanetDetails, planet])
+        setSelectedVehicleDetails([...selectedVehicleDetails, selectedVehicle])
+        setCount(count => count + 1)
+        setName("")
+        setPlanet("Select")
+        const newOptions = options.filter(option => option.key !== planet.key)
         setOptions(newOptions)
-        let selectedPlanets = [...planets, e]
-        setPlanets(selectedPlanets)
-        isSelected[index] = true
-        setIsSelected(isSelected)
+        // update vehicle count
+        const updatedVehicles = vehicles.map(vehicle => {
+            if (vehicle.name === selectedVehicle.name) {
+                vehicle.total_no -= 1
+                selectedVehicleSpeed = vehicle.speed
+            }
+            return vehicle
+        })
+        setVehicles(updatedVehicles)
+        setTime(time => {
+            let newTime = planet.distance / selectedVehicleSpeed
+            newTime += time
+            return newTime
+        })
     }
+
+    const findQueen = async () => {
+        // getToken
+        // prepare reuquest data 
+        // send request data with token
+
+    }
+
+    const handleClick = () => {
+        // update options
+        if (selectedVehicle.hasOwnProperty("name") && planet !== "Select") {
+            updateStates()
+        }
+    }
+
+    const findFalcone = async () => {
+        let planetNames = selectedPlanetDetails.map(selectedPlanetDetails => selectedPlanetDetails.name)
+        let vehicleNames = selectedVehicleDetails.map(selectedVehicleDetails => selectedVehicleDetails.name)
+        let token = await getToken()
+        console.log(token)
+        let requestData = { token: token.data.token, planet_names: planetNames, vehicle_names: vehicleNames }
+        let { data } = await find(requestData)
+        console.log(data)
+    }
+
     return (
         <div>
             <h2>Select planets you want to search in:</h2>
-            <div className="destination-container">
-                <div>
-                    <p>Destination 1</p>
-                    <Select options={options} onChange={(e) => getOptionValue(e, 1)} />
-                    {isSelected[1] && <Vehicles setTime={setTime} planet={planets[0]} vehicles={vehicles} setVehicles={setVehicles} />}
-                </div>
-                <div>
-                    <p>Destination 2</p>
-                    <Select options={options} onChange={(e) => getOptionValue(e, 2)} />
-                    {isSelected[2] && <Vehicles setTime={setTime} planet={planets[1]} vehicles={vehicles} setVehicles={setVehicles} />}
-                </div>
-                <div>
-                    <p>Destination 3</p>
-                    <Select options={options} onChange={(e) => getOptionValue(e, 3)} />
-                    {isSelected[3] && <Vehicles setTime={setTime} planet={planets[2]} vehicles={vehicles} setVehicles={setVehicles} />}
-                </div>
-                <div>
-                    <p>Destination 4</p>
-                    <Select options={options} onChange={(e) => getOptionValue(e, 4)} />
-                    {isSelected[4] && <Vehicles setTime={setTime} planet={planets[3]} vehicles={vehicles} setVehicles={setVehicles} />}
-                </div>
-            </div>
+            {count <= 4 &&
+                <div className="destination-container">
+                    <div>
+                        <p>Destination {count}</p>
+                        <Select options={options} onChange={(e) => setPlanet(e)} value={planet} />
+                        <Vehicles planet={planet} name={name} setName={setName} vehicles={vehicles} setSelectedVehicle={setSelectedVehicle} />
+                    </div>
+                    <button onClick={handleClick}>Next</button>
+                </div>}
             <div>Time {time}</div>
-            <button>Find Falcone!</button>
+            {count > 4 && <button onClick={findFalcone}>Find Falcone!</button>}
         </div>
     )
 }

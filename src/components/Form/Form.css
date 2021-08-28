@@ -1,4 +1,6 @@
 .destination-container{
     display: flex;
+    max-width: 500px;
     justify-content: space-around;
+    flex-direction: column;
 }
