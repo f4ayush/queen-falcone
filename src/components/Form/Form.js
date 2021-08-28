@@ -5,7 +5,7 @@ import { getPlanets, getVehicles, getToken, find } from '../../api'
 import { v4 as uuidv4 } from 'uuid';
 import Vehicles from './Vehicles';
 
-export default function Form() {
+export default function Form({ time, setTime, setResult, reset }) {
     const [planet, setPlanet] = useState("Select")
     const [selectedPlanetDetails, setSelectedPlanetDetails] = useState([])
     const [selectedVehicleDetails, setSelectedVehicleDetails] = useState([])
@@ -13,12 +13,19 @@ export default function Form() {
     const [count, setCount] = useState(1)
     const [options, setOptions] = useState([])
     const [vehicles, setVehicles] = useState([])
-    const [time, setTime] = useState(0)
+
     const [name, setName] = useState("")
     useEffect(() => {
         getPlanetList()
         getVehicleList()
-    }, [])
+        setPlanet("Select")
+        setSelectedPlanetDetails([])
+        setSelectedVehicleDetails([])
+        setSelectedVehicle({})
+        setCount(1)
+        setName("")
+    }, [reset])
+
     const getPlanetList = async () => {
         try {
             let { data } = await getPlanets()
@@ -69,12 +76,6 @@ export default function Form() {
         })
     }
 
-    const findQueen = async () => {
-        // getToken
-        // prepare reuquest data 
-        // send request data with token
-
-    }
 
     const handleClick = () => {
         // update options
@@ -90,6 +91,7 @@ export default function Form() {
         console.log(token)
         let requestData = { token: token.data.token, planet_names: planetNames, vehicle_names: vehicleNames }
         let { data } = await find(requestData)
+        setResult(data)
         console.log(data)
     }
 

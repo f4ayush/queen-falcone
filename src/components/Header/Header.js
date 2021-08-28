@@ -1,11 +1,11 @@
 import React from 'react'
 import './Header.css'
 
-export default function Header() {
+export default function Header({ setReset }) {
     return (
         <nav>
             <h1>Finding Falcone!</h1>
-            <button>Reset</button>
+            <button onClick={() => setReset(reset => reset + 1)}>Reset</button>
 
         </nav>
     )
