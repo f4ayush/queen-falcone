@@ -1,6 +1,18 @@
-.destination-container{
+
+
+.destination-container p {
+    text-align: center  ;
+}
+
+.next-button, .find-button{
+    margin-top: 8px;
+    padding: 8px 15px;
+    width: 100%;
+}
+
+.main-form {
     display: flex;
-    max-width: 500px;
-    justify-content: space-around;
+    justify-content: center;
     flex-direction: column;
+    align-items: center;
 }

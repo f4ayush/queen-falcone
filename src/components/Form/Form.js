@@ -96,8 +96,9 @@ export default function Form({ time, setTime, setResult, reset }) {
     }
 
     return (
-        <div>
+        <div className="main-form">
             <h2>Select planets you want to search in:</h2>
+            <div className="time">Time {time}</div>
             {count <= 4 &&
                 <div className="destination-container">
                     <div>
@@ -105,10 +106,9 @@ export default function Form({ time, setTime, setResult, reset }) {
                         <Select options={options} onChange={(e) => setPlanet(e)} value={planet} />
                         <Vehicles planet={planet} name={name} setName={setName} vehicles={vehicles} setSelectedVehicle={setSelectedVehicle} />
                     </div>
-                    <button onClick={handleClick}>Next</button>
+                    <button className="next-button" onClick={handleClick}>Next</button>
                 </div>}
-            <div>Time {time}</div>
-            {count > 4 && <button onClick={findFalcone}>Find Falcone!</button>}
+            {count > 4 && <div><button className="find-button" onClick={findFalcone}>Find Falcone!</button></div>}
         </div>
     )
 }

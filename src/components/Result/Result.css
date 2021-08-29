@@ -1,0 +1,10 @@
+.result-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.result-container button{
+    margin-top: 8px;
+    padding: 8px 15px;
+}

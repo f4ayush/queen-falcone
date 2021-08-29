@@ -8,8 +8,9 @@ export default function Vehicles({ name, setName, vehicles, setSelectedVehicle, 
         setSelectedVehicle(vehicle)
     }
 
-
-    // console.log(planet)
+    const style = {
+        marginTop: "8px"
+    }
     return (
         <div style={{ display: "flex", flexDirection: "column" }}>
 
@@ -17,7 +18,7 @@ export default function Vehicles({ name, setName, vehicles, setSelectedVehicle, 
                 vehicles.map((vehicle, index) => {
                     if (vehicle.total_no > 0 && vehicle.max_distance >= planet.distance) {
                         return (
-                            <label key={index}>
+                            <label style={style} key={index}>
                                 <input
                                     type="radio"
                                     value={vehicle.name}
@@ -29,7 +30,7 @@ export default function Vehicles({ name, setName, vehicles, setSelectedVehicle, 
                     }
 
                     return (
-                        <label key={index}>
+                        <label style={style} key={index}>
                             <input
                                 type="radio"
                                 value={vehicle.name}
