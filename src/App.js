@@ -14,7 +14,6 @@ function App() {
   useEffect(() => {
     setResult({})
     setTime(0)
-    console.log("sss")
   }, [reset])
   return (
     <>

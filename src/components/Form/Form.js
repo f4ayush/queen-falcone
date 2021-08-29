@@ -46,9 +46,8 @@ export default function Form({ time, setTime, setResult, reset }) {
         try {
             let { data } = await getVehicles()
             setVehicles(data)
-            console.log(data)
         } catch (error) {
-
+            console.log(error)
         }
     }
     const updateStates = () => {
@@ -88,11 +87,9 @@ export default function Form({ time, setTime, setResult, reset }) {
         let planetNames = selectedPlanetDetails.map(selectedPlanetDetails => selectedPlanetDetails.name)
         let vehicleNames = selectedVehicleDetails.map(selectedVehicleDetails => selectedVehicleDetails.name)
         let token = await getToken()
-        console.log(token)
         let requestData = { token: token.data.token, planet_names: planetNames, vehicle_names: vehicleNames }
         let { data } = await find(requestData)
         setResult(data)
-        console.log(data)
     }
 
     return (
